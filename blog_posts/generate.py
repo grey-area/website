@@ -10,6 +10,8 @@ post_dirs = os.listdir("posts")
 
 posts = {}
 
+with open("templates/post-top0.html") as f:
+    post_top0 = f.read()
 with open("templates/post-top.html") as f:
     post_top = f.read()
 with open("templates/post-bottom.html") as f:
@@ -39,11 +41,14 @@ for post_dir in post_dirs:
     check_call(command.split(" "))
     shutil.move("posts/%s/%s.html" % (post_dir, post_name), "tmp/")
 
-    content = post_top
+    content = post_top0
+    content += title
+    content += post_top
     content += "<h1>%s</h1>\n" % title
     date_str = date.strftime("%d %B %Y").lstrip("0")
-    content += "<p>%s</p>\n" % date_str
-    content += '<br><a href="../blog-posts-py/%s.ipynb" download target="_blank">Download the .ipynb file of this blog post here.</a><br><br>\n' % post_name
+    content += '<p><a href="https://twitter.com/share" class="twitter-share-button" data-via="AndrewM_Webb" data-dnt="true" data-show-count="false">Tweet</a><script async src="//platform.twitter.com/widgets.js" charset="utf-8"></script> '
+    content += "%s</p>\n" % date_str
+    content += '<a href="../blog-posts-py/%s.ipynb" download target="_blank">Download the .ipynb file of this blog post here.</a><br><br>\n' % post_name
     with open("tmp/%s.html" % post_name) as f:
         content += f.read()
     content += post_bottom
