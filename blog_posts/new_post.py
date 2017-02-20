@@ -22,6 +22,8 @@ shutil.copy("templates/requirements.txt", post_dir)
 shutil.copy("templates/no_publish", post_dir)
 shutil.copy("templates/template.ipynb", "%s/%s.ipynb" % (post_dir, title))
 
+os.mkdir("%s/img" % post_dir)
+
 title.replace("_", " ")
 title = title[0].upper() + title[1:]
 with open("%s/README.md" % post_dir, "w") as f:

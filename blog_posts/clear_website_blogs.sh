@@ -1,4 +1,4 @@
 #!/bin/bash
 
-rm ../site/blog-posts/*
-rm ../site/blog-posts-py/*
+rm -r ../site/blog-posts/*
+rm -r ../site/blog-images/*

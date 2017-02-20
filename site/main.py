@@ -12,7 +12,7 @@ class Blog(webapp2.RequestHandler):
 
 class BlogPost(webapp2.RequestHandler):
   def get(self,name):
-    HTML = open('blog-posts/' + name + '.html').read()
+    HTML = open('blog-posts/%s.html' % name).read()
     print "hello"
     self.response.out.write(HTML)
 

@@ -9,6 +9,7 @@ os.mkdir("tmp")
 post_dirs = os.listdir("posts")
 
 posts = {}
+short_names = {}
 
 with open("templates/post-top0.html") as f:
     post_top0 = f.read()
@@ -34,12 +35,20 @@ for post_dir in post_dirs:
     title = title[0].upper() + title[1:]
     posts[date] = post_name
 
-    if os.path.exists("../site/blog-posts/%s.html" % post_name) and os.path.getmtime("posts/%s/%s.ipynb" % (post_dir, post_name)) < os.path.getmtime("../site/blog-posts/%s.html" % post_name):
+    short_name = "_".join(post_name.split("_")[:2])
+    short_name0 = short_name
+    i = 0
+    while short_name0 in short_names.values():
+        short_name0 = short_name + "_%d" % i
+        i += 1
+    short_names[date] = short_name0
+
+    if os.path.exists("../site/blog-posts/%s.html" % short_name0) and os.path.getmtime("posts/%s/%s.ipynb" % (post_dir, post_name)) < os.path.getmtime("../site/blog-posts/%s.html" % short_name0):
         continue
 
     command = "jupyter nbconvert --to html --template basic posts/%s/%s.ipynb" % (post_dir, post_name)
     check_call(command.split(" "))
-    shutil.move("posts/%s/%s.html" % (post_dir, post_name), "tmp/")
+    shutil.move("posts/%s/%s.html" % (post_dir, post_name), "tmp/%s.html" % short_name0)
 
     content = post_top0
     content += title
@@ -48,14 +57,47 @@ for post_dir in post_dirs:
     date_str = date.strftime("%d %B %Y").lstrip("0")
     content += '<p><a href="https://twitter.com/share" class="twitter-share-button" data-via="AndrewM_Webb" data-dnt="true" data-show-count="false">Tweet</a><script async src="//platform.twitter.com/widgets.js" charset="utf-8"></script> '
     content += "%s</p>\n" % date_str
-    content += '<a href="../blog-posts-py/%s.ipynb" download target="_blank">Download the .ipynb file of this blog post here.</a><br><br>\n' % post_name
-    with open("tmp/%s.html" % post_name) as f:
-        content += f.read()
+    content += '<br>(This blog post was written as a Jupyter notebook. <a href="https://www.github.com/grey-area/website/tree/master/blog_posts/posts/%s" target="_blank">The .ipynb file of this blog post and associated files can be found here.)</a><br><br>\n' % post_dir
+
+    with open("tmp/%s.html" % short_name0) as f:
+        post_content = f.read()
+        content += post_content.replace('src="./img/', 'src="../blog-images/%s/' % post_name)
+
+    content += """
+
+<br>
+<a href="https://twitter.com/share" class="twitter-share-button" data-via="AndrewM_Webb" data-dnt="true" data-show-count="false">Tweet</a><script async src="//platform.twitter.com/widgets.js" charset="utf-8"></script>
+
+<br>
+<div id="disqus_thread"></div>
+<script>
+
+/**
+*  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+*  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables*/
+/*
+var disqus_config = function () {
+this.page.url = http://awebb.info/blog/%s;  // Replace PAGE_URL with your page's canonical URL variable
+this.page.identifier = %s; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+};
+*/
+(function() { // DON'T EDIT BELOW THIS LINE
+var d = document, s = d.createElement('script');
+s.src = '//awebb-info.disqus.com/embed.js';
+s.setAttribute('data-timestamp', +new Date());
+(d.head || d.body).appendChild(s);
+})();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+
+
+""" % (short_name0, short_name0)
+
     content += post_bottom
 
-    with open("../site/blog-posts/%s.html" % post_name, "w") as f:
+    with open("../site/blog-posts/%s.html" % short_name0, "w") as f:
         f.write(content)
-    shutil.copy("posts/%s/%s.ipynb" % (post_dir, post_name), "../site/blog-posts-py/")
+    shutil.copytree("posts/%s/img" % post_dir, "../site/blog-images/%s" % post_name)
 
 shutil.rmtree("tmp")
 
@@ -74,11 +116,12 @@ for date in sorted_keys:
         content += new_month_year_str
         month_year_str = new_month_year_str
     post_name = posts[date]
+    short_name = short_names[date]
     title = post_name.replace("_", " ")
     title = title[0].upper() + title[1:]
     date_str = date.strftime("%d/%m/%y")
-    content += '%s <a href="../blog/%s">%s</a>\n' % (date_str, post_name, title)
-    content += '&nbsp;&nbsp;<a href="../blog-posts-py/%s.ipynb" download target="_blank">(.ipynb file)</a>\n' % post_name
+    content += '%s <a href="../blog/%s">%s</a>\n' % (date_str, short_name, title)
+    #content += '&nbsp;&nbsp;<a href="https://github.com/grey-area/website/tree/master/blog_posts/posts/%s" target="_blank">(.ipynb)</a>\n' % post_name
     #content += '&nbsp;<a href="../blog-posts-py/%s.ipynb">(interactive)</a>\n' % post_name
     content += "<br>"
 

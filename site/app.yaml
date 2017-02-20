@@ -9,9 +9,6 @@ handlers:
 - url: /blog-images
   static_dir: blog-images
 
-- url: /blog-posts-py
-  static_dir: blog-posts-py
-
 - url: /js
   static_dir: js
 
