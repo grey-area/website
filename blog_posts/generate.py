@@ -57,7 +57,9 @@ for post_dir in post_dirs:
     date_str = date.strftime("%d %B %Y").lstrip("0")
     content += '<p><a href="https://twitter.com/share" class="twitter-share-button" data-via="AndrewM_Webb" data-dnt="true" data-show-count="false">Tweet</a><script async src="//platform.twitter.com/widgets.js" charset="utf-8"></script> '
     content += "%s</p>\n" % date_str
-    content += '<br>(This blog post was written as a Jupyter notebook. <a href="https://www.github.com/grey-area/website/tree/master/blog_posts/posts/%s" target="_blank">The .ipynb file of this blog post and associated files can be found here.)</a><br><br>\n' % post_dir
+    content += '<br>\n'
+    if "no_github_link" not in os.listdir("posts/%s" % post_dir):
+        content += '(This blog post was written as a Jupyter notebook. <a href="https://www.github.com/grey-area/website/tree/master/blog_posts/posts/%s" target="_blank">The .ipynb file of this blog post and associated files can be found here.)</a><br><br>\n' % post_dir
 
     with open("tmp/%s.html" % short_name0) as f:
         post_content = f.read()
