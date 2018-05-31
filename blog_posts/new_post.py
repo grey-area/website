@@ -12,7 +12,7 @@ if len(sys.argv) > 1:
     title = sys.argv[1]
     dir_name = "%s%s" % (dir_start, title)
 else:
-    print "Supply a name"
+    print("Supply a name")
     sys.exit(1)
 
 post_dir = "posts/%s" % dir_name
