@@ -4,6 +4,7 @@ import os
 from subprocess import check_call
 import shutil
 import datetime
+import urllib.parse
 
 os.mkdir("tmp")
 post_dirs = os.listdir("posts")
@@ -59,7 +60,7 @@ for post_dir in post_dirs:
     content += "%s</p>\n" % date_str
     content += '<br>\n'
     if "no_github_link" not in os.listdir("posts/%s" % post_dir):
-        content += '(This blog post was written as a Jupyter notebook. <a href="https://www.github.com/grey-area/website/tree/master/blog_posts/posts/%s" target="_blank">The .ipynb file of this blog post and associated files can be found here.)</a><br><br>\n' % post_dir
+        content += '(This blog post was written as a Jupyter notebook. <a href="https://www.github.com/grey-area/website/tree/master/blog_posts/posts/%s" target="_blank">The .ipynb file of this blog post and associated files can be found here.)</a><br><br>\n' % urllib.parse.quote(post_dir)
 
     with open("tmp/%s.html" % short_name0) as f:
         post_content = f.read()
