@@ -48,6 +48,17 @@ body {
   }
 }
 
+#wrapper3 {
+	margin:0 auto;
+	padding:0;
+	background:#EEE; /*! NOTE blog background */ 
+}
+@media (min-width: 1056px) {
+  #wrapper3 {
+    width: 1056px;
+  }
+}
+
 footer {
   display: block;
   color: gray;
@@ -315,7 +326,7 @@ body {
   font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
   font-size: 15px;
   line-height: 1.428571429;
-  color: #444;
+  color: #111;
   background-color: #EEE;
 }
 input,
@@ -478,7 +489,7 @@ h6 .small,
 }
 h1,
 .h1 {
-  font-size: 30px;
+  font-size: 32px;
 }
 h2,
 .h2 {
