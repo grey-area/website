@@ -3,3 +3,4 @@ old_blog_posts
 site/blog-post-pages/*
 site/blog-posts/*
 site/blog-images/*
+*.pyc
