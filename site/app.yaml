@@ -21,6 +21,10 @@ handlers:
 - url: /t
   static_dir: temp
 
+- url: /cv
+  static_files: cv.pdf
+  upload: cv.pdf
+
 - url: /(.*)
   script: main.application
 
