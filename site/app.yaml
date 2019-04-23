@@ -25,6 +25,10 @@ handlers:
   static_files: cv.pdf
   upload: cv.pdf
 
+- url: /CV
+  static_files: cv.pdf
+  upload: cv.pdf
+
 - url: /qcircuits
   static_dir: qcircuits
 
