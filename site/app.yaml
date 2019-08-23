@@ -32,6 +32,9 @@ handlers:
 - url: /qcircuits
   static_dir: qcircuits
 
+- url: /temp_decomposition
+  static_dir: temp_decomposition
+
 - url: /(.*)
   script: main.application
 
